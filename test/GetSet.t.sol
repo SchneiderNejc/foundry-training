@@ -10,4 +10,8 @@ contract GetSetTest is Test {
     function setUp() public {
         getSet = new GetSet();
     }
+
+    function testValueIsFalse() public {
+        assertFalse(getSet.getValue());
+    }
 }
