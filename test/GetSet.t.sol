@@ -4,6 +4,8 @@ import "forge-std/Test.sol";
 import "src/GetSet.sol";
 
 contract GetSetTest is Test {
+    // for accessing/modify contract storage
+    using stdStorage for StdStorage;
     // contract instances
     GetSet getSet;
 
@@ -74,9 +76,7 @@ contract GetSetTest is Test {
         assertFalse(getSet.onlyOwner());
 
         // multiple return value
-        address sender;
-        address owner;
-        (sender, owner) = getSet.getSenderOwner();
+        (address sender, address owner) = getSet.getSenderOwner();
         console.log("sender: %s :: owner: $s", sender, owner);
     }
 
@@ -129,6 +129,46 @@ contract GetSetTest is Test {
         bool success = getSet.setIdentifier(number);
         assertTrue(success);
     }
+
+    // makeAddrAndKey
+    // (address alice, uint256 key) = makeAddrAndKey("alice");
+
+    // std store (write)
+    function testUpdateStorageWithForge() public {
+        stdstore
+            .target(address(getSet))
+            .sig("identifier()")
+            .checked_write(100);
+
+            uint identifier = getSet.identifier();
+            console.log("identifier: ", identifier);
+
+        // uint identifier = getSet.identifier();
+        // console.log(identifier);
+
+        // save to mapping struct
+        stdstore
+            .target(address(getSet))
+            .sig("people(address)")
+            .with_key(address(this))
+            .depth(2)
+            .checked_write("Chief");
+
+        stdstore
+            .target(address(getSet))
+            .sig("people(address)")
+            .with_key(address(this))
+            .depth(1)
+            .checked_write(120);
+
+        (uint weight, bytes32 position) = getSet.getPerson(address(this));
+        console.log("weight: %s :: position: %s", weight, string(abi.encodePacked(position)));
+
+    }
+
+    // std store (read)
+
+
 
 
 
