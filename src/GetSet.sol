@@ -35,7 +35,8 @@ contract GetSet {
     }
 
     function setIdentifier(uint _number) external returns (bool) {
-        if(_number < 4 || _number > 21)
+        require(_number != identifier, "cant be same number");
+        if(_number < 5 || _number > 20)
             return false;
         else
             identifier = _number;

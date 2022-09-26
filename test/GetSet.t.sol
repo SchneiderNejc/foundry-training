@@ -85,6 +85,9 @@ contract GetSetTest is Test {
     // startHoax ->  perpetual prank from funded address,
     // deal -> mint erc20
 
+    // changePrank -> stopPrank + startPrank
+    // useful when startPrank is setUp, to deactivate it in certain tests
+
     // deployCode
     function testCannotDeployCodeWithInvalidParams() public {
         vm.expectRevert(bytes("number cant be 0"));
@@ -97,10 +100,14 @@ contract GetSetTest is Test {
             abi.encode(5, address(0)));
     }
 
+    // makeAddr
     function testDeployCode() public {
+
+        address nejc = makeAddr("nejc");
+
         // deploy additional contract and save its address
         address additionalDeployment = deployCode("AdditionalDeployment.sol",
-            abi.encode(5, 0xE71d14a3fA97292BDE885C1D134bE4698e09b3B7));
+            abi.encode(5, nejc));
         console.log("additionalDeployment: %s", additionalDeployment);
 
         // retrieve stored address from newly deployed contract
@@ -111,14 +118,21 @@ contract GetSetTest is Test {
         // extract return value from .call
         address owner = abi.decode(data, (address));
         console.log("newly deployed contract owner: $s", owner);
+        assertEq(owner, nejc);
     }
 
     // bound
     function testSetIdentifier(uint number) public {
         number = bound(number, 5, 20);
+        // assume
+        vm.assume(number != 10);
         bool success = getSet.setIdentifier(number);
         assertTrue(success);
     }
+
+
+
+
 
 
 
