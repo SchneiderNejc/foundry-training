@@ -113,6 +113,13 @@ contract GetSetTest is Test {
         console.log("newly deployed contract owner: $s", owner);
     }
 
+    // bound
+    function testSetIdentifier(uint number) public {
+        number = bound(number, 5, 20);
+        bool success = getSet.setIdentifier(number);
+        assertTrue(success);
+    }
+
 
 
 

@@ -34,5 +34,16 @@ contract GetSet {
         return (msg.sender, owner);
     }
 
+    function setIdentifier(uint _number) external returns (bool) {
+        if(_number < 4 || _number > 21)
+            return false;
+        else
+            identifier = _number;
+        return true;
+    }
+
+
+
+
 
 }
