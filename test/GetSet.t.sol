@@ -135,49 +135,48 @@ contract GetSetTest is Test {
 
     // std store (write)
     function testUpdateStorageWithForge() public {
+        // read/write public variable
         stdstore
             .target(address(getSet))
             .sig("identifier()")
             .checked_write(100);
 
-            uint identifier = getSet.identifier();
-            console.log("identifier: ", identifier);
+        uint identifier = stdstore
+            .target(address(getSet))
+            .sig("identifier()")
+            .read_uint();
+        console.log("identifier: ", identifier);
 
-        // uint identifier = getSet.identifier();
-        // console.log(identifier);
-
-        // save to mapping struct
+        // write to struct inside public mapping
         stdstore
             .target(address(getSet))
             .sig("people(address)")
             .with_key(address(this))
-            .depth(2)
-            .checked_write("Chief");
-
+            .depth(0)
+            .checked_write(120);
         stdstore
             .target(address(getSet))
             .sig("people(address)")
             .with_key(address(this))
             .depth(1)
-            .checked_write(120);
+            .checked_write("Chief");
 
-        (uint weight, bytes32 position) = getSet.getPerson(address(this));
-        console.log("weight: %s :: position: %s", weight, string(abi.encodePacked(position)));
+        // read from struct inside public mapping
+        uint rank = stdstore
+            .target(address(getSet))
+            .sig("people(address)")
+            .with_key(address(this))
+            .depth(0)
+            .read_uint();
 
+        bytes32 position = stdstore
+            .target(address(getSet))
+            .sig("people(address)")
+            .with_key(address(this))
+            .depth(1)
+            .read_bytes32();
+
+        console.log("rank %s has position %s", rank, string(abi.encodePacked(position)));
     }
-
-    // std store (read)
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
