@@ -201,17 +201,17 @@ contract GetSetTest is Test {
     }
 
     // computeCreateAddress - NOT WORKING
-    function testPredeterminedDeployment() public {
-        // input: deployer, nonce
-        address calculatedAddress = computeCreateAddress(address(this), 1);
-
-        GetSet getSet = new GetSet();
-
-        address owner = getSet.owner();
-        assertEq(address(this), owner);   //returns true
-
-        // assertEq(calculatedAddress, address(getSet));  // returns false
-    }
+    // function testPredeterminedDeployment() public {
+    //     // input: deployer, nonce
+    //     address calculatedAddress = computeCreateAddress(address(this), 1);
+    //
+    //     GetSet getSet = new GetSet();
+    //
+    //     address owner = getSet.owner();
+    //     assertEq(address(this), owner);   //returns true
+    //
+    //     // assertEq(calculatedAddress, address(getSet));  // returns false
+    // }
 
 
 }
