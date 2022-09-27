@@ -6,13 +6,18 @@ contract GetSet {
     uint public identifier = 10;
     uint[] public values = [identifier, 4, 3, 2, 1];
     uint timeCreated = block.timestamp;
-    address owner = 0xE71d14a3fA97292BDE885C1D134bE4698e09b3B7;
+    address user = 0xE71d14a3fA97292BDE885C1D134bE4698e09b3B7;
+    address public owner;
 
     struct Person {
         uint rank;
         bytes32 position;
     }
     mapping (address => Person) public people;
+
+    constructor() {
+        owner = msg.sender;
+    }
 
     function getValue() external view returns(bool) {
         return value;
@@ -32,12 +37,12 @@ contract GetSet {
         return block.timestamp > timeCreated + 30;
     }
 
-    function onlyOwner() external view returns(bool) {
-        return msg.sender == owner;
+    function onlyUser() external view returns(bool) {
+        return msg.sender == user;
     }
 
-    function getSenderOwner() external view returns(address, address) {
-        return (msg.sender, owner);
+    function getSenderUser() external view returns(address, address) {
+        return (msg.sender, user);
     }
 
     function setIdentifier(uint _number) external returns (bool) {
