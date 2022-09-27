@@ -191,6 +191,13 @@ contract GetSetTest is Test {
 
         // delta - difference between two no. in absolute value
         console.log("distance between -4 and 3 is: ", stdMath.delta(-4, 3));
+
+        // percentDelta - difference between two numbers in percentage
+        // 125 = 50 * 150% :: 50 = 125 *60%
+        console.log("First was 50 employees. Now are 125. Its %s% compared to begining.",
+            stdMath.percentDelta(uint(125), 50)/10e15);
+        console.log("First was 125 employees. Now are 50. Its %s% compared to begining.",
+            stdMath.percentDelta(uint(50), 125)/10e15);
     }
 
     // computeCreateAddress - NOT WORKING
