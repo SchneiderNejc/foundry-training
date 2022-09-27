@@ -9,15 +9,10 @@ contract GetSet {
     address owner = 0xE71d14a3fA97292BDE885C1D134bE4698e09b3B7;
 
     struct Person {
-        string name;
-        uint weight;
+        uint rank;
         bytes32 position;
     }
     mapping (address => Person) public people;
-
-    function getPerson(address person) external view returns(uint, bytes32) {
-        return (people[person].weight, people[person].position);
-    }
 
     function getValue() external view returns(bool) {
         return value;
