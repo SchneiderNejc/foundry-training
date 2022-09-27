@@ -2,6 +2,8 @@ pragma solidity 0.8.15;
 
 import "forge-std/Test.sol";
 import "src/GetSet.sol";
+import "src/AdditionalDeployment.sol";
+
 
 contract GetSetTest is Test {
     // for accessing/modify contract storage
@@ -67,16 +69,16 @@ contract GetSetTest is Test {
     }
 
     // prank
-    function testOnlyOwner() public {
-        assertFalse(getSet.onlyOwner());
+    function testOnlyUser() public {
+        assertFalse(getSet.onlyUser());
 
         //vm.prank only works for the next call
         vm.prank(0xE71d14a3fA97292BDE885C1D134bE4698e09b3B7);
-        assertTrue(getSet.onlyOwner());
-        assertFalse(getSet.onlyOwner());
+        assertTrue(getSet.onlyUser());
+        assertFalse(getSet.onlyUser());
 
         // multiple return value
-        (address sender, address owner) = getSet.getSenderOwner();
+        (address sender, address owner) = getSet.getSenderUser();
         console.log("sender: %s :: owner: $s", sender, owner);
     }
 
@@ -101,9 +103,12 @@ contract GetSetTest is Test {
     }
 
     // makeAddr
+    // does not require import contract
     function testDeployCode() public {
 
+        // hash string input to generate address
         address nejc = makeAddr("nejc");
+        console.log(nejc);
 
         // deploy additional contract and save its address
         address additionalDeployment = deployCode("AdditionalDeployment.sol",
@@ -178,5 +183,28 @@ contract GetSetTest is Test {
 
         console.log("rank %s has position %s", rank, string(abi.encodePacked(position)));
     }
+
+    // std math
+    function testMathWithForge() public {
+        // abs - absolute value
+        console.log("absolute no. of -5 is: ", stdMath.abs(-5));
+
+        // delta - difference between two no. in absolute value
+        console.log("distance between -4 and 3 is: ", stdMath.delta(-4, 3));
+    }
+
+    // computeCreateAddress - NOT WORKING
+    function testPredeterminedDeployment() public {
+        // input: deployer, nonce
+        address calculatedAddress = computeCreateAddress(address(this), 1);
+
+        GetSet getSet = new GetSet();
+
+        address owner = getSet.owner();
+        assertEq(address(this), owner);   //returns true
+
+        // assertEq(calculatedAddress, address(getSet));  // returns false
+    }
+
 
 }
