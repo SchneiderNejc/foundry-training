@@ -90,6 +90,9 @@ contract GetSetTest is Test {
     // changePrank -> stopPrank + startPrank
     // useful when startPrank is setUp, to deactivate it in certain tests
 
+    // TODO
+    // sign, startBroadcast, stopBroadcast
+
     // deployCode
     function testCannotDeployCodeWithInvalidParams() public {
         vm.expectRevert(bytes("number cant be 0"));
@@ -212,6 +215,27 @@ contract GetSetTest is Test {
     //
     //     // assertEq(calculatedAddress, address(getSet));  // returns false
     // }
+
+    // derive private key from a mnemonic and store it in forge local wallet.
+    // Returns public and private key - NOT WORKING
+    // function testDerivePrivateKey() public {
+    //     string memory mnemonic = "test test test test test test test test test test test junk";
+    //
+    //     // mnemonic, index (accountId)
+    //     (address deployer, uint privateKey) = deriveRememberKey(mnemonic, 0);
+    //
+    //     bytes32 hash = keccak256("Signed by deployer");
+    //     (uint8 v, bytes32 r, bytes32 s) = vm.sign(privateKey, hash);
+    //
+    //     // TODO explain startBroadcast/stopBroadcast, vm.sign
+    //     vm.startBroadcast(deployer);
+    //     // .. some code ..
+    //     vm.stopBroadcast();
+    //
+    //     console.log("public key: %s :: private key: %s" ,deployer, privateKey);
+    // }
+
+
 
 
 }
